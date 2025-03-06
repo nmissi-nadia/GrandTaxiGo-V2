@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4 bg-[#f9d71c]" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}" class="bg-[#4a77c5]">
+    <form method="POST" action="{{ route('login') }}" >
         @csrf
 
         <!-- Email Address -->
@@ -43,5 +43,9 @@
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
+        <hr>
+        <a href="{{ route('login.provider', ['provider' => 'google']) }}" class="btn btn-primary">
+            Connexion avec Google
+        </a>
     </form>
 </x-guest-layout>

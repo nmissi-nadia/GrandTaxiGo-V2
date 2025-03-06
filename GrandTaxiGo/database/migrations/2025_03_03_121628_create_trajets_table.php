@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('trajets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('chauffeur_id')->constrained('users');
+            $table->foreignId('ville_id')->nullable()->constrained('villes')->onDelete('cascade');
             $table->string('rue_depart');
             $table->string('rue_arrivee');
             $table->enum('statut', ['actif', 'en attente', 'annulé', 'terminé'])->default('en attente');

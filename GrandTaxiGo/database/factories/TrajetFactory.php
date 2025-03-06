@@ -19,6 +19,7 @@ class TrajetFactory extends Factory
     {
         return [
             'chauffeur_id' => \App\Models\User::factory(), // Crée un chauffeur aléatoire
+            'ville_id' => \App\Models\Ville::factory(), // Crée une ville aléatoire
             'rue_depart' => $this->faker->streetAddress,
             'rue_arrivee' => $this->faker->streetAddress,
             'statut' => $this->faker->randomElement(['actif', 'terminé']),

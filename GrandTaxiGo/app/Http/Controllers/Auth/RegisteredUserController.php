@@ -33,7 +33,7 @@ class RegisteredUserController extends Controller
         'name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        'role' => ['required', 'in:passager,chauffeur'],
+        'role' => ['required', 'in:passager,chauffeur,admin'],
          // Limite de 2 Mo
     ]);
 

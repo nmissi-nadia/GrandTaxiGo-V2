@@ -10,6 +10,7 @@ class Trajet extends Model
     use HasFactory;
     protected $fillable = [
         'chauffeur_id',
+        'ville_id', 
         'rue_depart',
         'rue_arrivee',
         'statut',
@@ -26,5 +27,9 @@ class Trajet extends Model
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+    public function ville()
+    {
+        return $this->belongsTo(Ville::class, 'ville_id');
     }
 }

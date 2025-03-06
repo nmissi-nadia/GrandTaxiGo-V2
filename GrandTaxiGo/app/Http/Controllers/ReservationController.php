@@ -45,11 +45,27 @@ class ReservationController extends Controller
         $reservation->delete();
         return redirect()->back();
     }
-    public function annuler($id)
+            public function annuler($id)
+        {
+            $reservation = Reservation::findOrFail($id); 
+            $reservation->statut = 'Annulé'; 
+            $reservation->save();
+            return redirect()->back(); 
+        }
+        public function generateQRCode(Reservation $reservation)
 {
-    $reservation = Reservation::findOrFail($id); 
-    $reservation->statut = 'Annulé'; 
-    $reservation->save();
-    return redirect()->back(); 
-}
+    // Générer un QR Code contenant les informations de la réservation
+    $qrCode = QrCode::size(200)->generate(json_encode([
+        'id' => $reservation->id,
+        'user' => $reservation->user->name,
+        'trajet' => $reservation->trajet->nom, // Remplacez par les champs appropriés
+        'date' => $reservation->created_at->format('Y-m-d H:i:s'),
+    ]));
+
+    // Sauvegarder le QR Code dans le stockage
+    $path = 'qrcodes/' . $reservation->id . '.png';
+    Storage::put($path, $qrCode);
+
+    return $path; // Retourne le chemin du fichier QR Code
+}   
 }
