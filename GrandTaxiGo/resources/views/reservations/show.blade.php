@@ -94,7 +94,42 @@
                     </div>
                 </div>
             </div>
-
+            <!-- Commentaires -->
+            <div>
+                <div class="bg-white border rounded-lg overflow-hidden">
+                    <div class="bg-gray-600 text-white px-4 py-3">
+                        <h5 class="font-semibold">Commentaires</h5>
+                    </div>
+                    <div class="p-4">
+                        @if ($commentaires)
+                            @foreach ($commentaires as $commentaire)
+                                <div class="mb-4">
+                                    <p class="mb-2"><span class="font-semibold">Auteur:</span> {{ $commentaire->user->name }}</p>
+                                    <p class="mb-2"><span class="font-semibold">Commentaire:</span> {{ $commentaire->contenu }}</p>
+                                </div>
+                            @endforeach
+                        @else
+                            <p class="text-red-500">Aucun commentaire disponible.</p>
+                        @endif
+                    </div>
+                </div>
+                <!-- Ajouter nv comments  -->  
+                 <div class="bg-white border rounded-lg overflow-hidden">
+                    <div class="bg-gray-600 text-white px-4 py-3">
+                        <h5 class="font-semibold">Ajouter un nouveau commentaire</h5>
+                    </div>
+                    <div class="p-4">
+                    <form method="POST" action="{{ route('passager.commenter', $reservation->id) }}">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="contenu" class="block font-semibold mb-2">Commentaire</label>
+                            <textarea name="contenu" id="contenu" class="w-full border rounded-lg px-3 py-2" placeholder="Votre commentaire"></textarea>
+                        </div>
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">Ajouter</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
             <!-- Footer -->
             <div class="bg-gray-50 px-6 py-4 border-t">
                 <a href="{{ route('passager.mesreservation') }}" class="inline-flex items-center text-gray-700 hover:text-gray-900">

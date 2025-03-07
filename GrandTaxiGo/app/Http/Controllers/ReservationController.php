@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Mail\ReservationAcceptedMail;
 use Illuminate\Support\Facades\Mail;
 use App\Events\ReservationUpdated;
-
+use App\Models\Commentaire;
 class ReservationController extends Controller
 {
     public function index()
@@ -16,16 +16,16 @@ class ReservationController extends Controller
         $reservations = Reservation::with(['trajet', 'passager'])
         ->where('passager_id', auth()->id()) // Filtre basé sur l'utilisateur connecté
         ;
-        
-        return view('passager.mesreservation', compact('reservations'));
+        $commentaires = Commentaire::where('reservation_id')->get();
+        return view('passager.mesreservation', compact('reservations','commentaires'));
     }
 
     public function show($id)
     {
         $reservation = Reservation::with(['trajet.chauffeur', 'passager'])
             ->findOrFail($id);
-
-        return view('reservations.show', compact('reservation'));
+        $commentaires = Commentaire::where('reservation_id', $id)->get();
+        return view('reservations.show', compact('reservation','commentaires'));
     }
 
     public function edit($id)

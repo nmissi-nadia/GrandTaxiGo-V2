@@ -68,10 +68,16 @@ public function edit($id)
 
             return redirect()->route('chauffeur.index')->with('success', 'Trajet mis à jour avec succès.');
         }
-public function destroy($id)
-{
-    $trajet = Trajet::findOrFail($id);
-    $trajet->delete();
-    return redirect()->route('chauffeur.index')->with('success', 'Trajet supprimé avec succès.');
-}
+        public function show($id)
+        {
+            $trajet = Trajet::with(['chauffeur', 'commentaires.user'])->findOrFail($id);
+            $avis = Avis::where('reservation_id', $trajet->id)->get(); // Récupérer les avis associés au trajet
+            return view('trajets.show', compact('trajet', 'commentaires', 'avis'));
+        }
+        public function destroy($id)
+        {
+            $trajet = Trajet::findOrFail($id);
+            $trajet->delete();
+            return redirect()->route('chauffeur.index')->with('success', 'Trajet supprimé avec succès.');
+        }
 }

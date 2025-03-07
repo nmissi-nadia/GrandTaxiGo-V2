@@ -10,6 +10,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VilleController;
+use App\Http\Controllers\CommentaireController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/trajets/edit/{id}', [TrajetController::class, 'edit'])->name('trajets.edit');
     Route::post('/trajets/update/{id}', [TrajetController::class, 'update'])->name('trajets.update');
     Route::post('/trajets/delete/{id}', [TrajetController::class, 'destroy'])->name('trajets.destroy');
-    
+    Route::get('/trajets/{id}', [TrajetController::class, 'show'])->name('trajets.show');
 
     Route::get('/passager/dashboard', [PassagerController::class, 'index'])->name('passager.dashboard');
     // route pour acceder au reservations d'une passager lui meme
@@ -54,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/villes/edit/{id}', [VilleController::class, 'edit'])->name('villes.edit');
     Route::post('/villes/update/{id}', [VilleController::class, 'update'])->name('villes.update');
     Route::delete('/villes/delete/{id}', [VilleController::class, 'destroy'])->name('villes.destroy');
+    Route::post('/reservations/{id}/commentaires', [CommentaireController::class, 'store'])->name('passager.commenter');
 });
 
 // Route pour rediriger vers le fournisseur (Google ou Facebook)

@@ -32,4 +32,8 @@ class Trajet extends Model
     {
         return $this->belongsTo(Ville::class, 'ville_id');
     }
+    public function commentaires()
+    {
+        return $this->hasMany(Commentaire::class);
+    }
 }

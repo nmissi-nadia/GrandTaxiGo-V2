@@ -17,4 +17,8 @@ class Reservation extends Model
     {
         return $this->belongsTo(Trajet::class, 'trajet_id');
     }
+    public function commentaires()
+    {
+        return $this->hasMany(Commentaire::class);
+    }
 }
