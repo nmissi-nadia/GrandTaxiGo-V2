@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Storage;
+use App\Mail\ReservationAcceptedMail;
+use Illuminate\Support\Facades\Mail;
+use App\Events\ReservationUpdated;
 
 class ReservationController extends Controller
 {
@@ -31,11 +36,16 @@ class ReservationController extends Controller
     public function updateStatut(Request $request, $id)
         {
             $reservation = Reservation::findOrFail($id);
-
+            $user = auth()->user();
             // Changez le statut selon votre logique. Par exemple, vous pouvez alternativer entre 'actif' et 'terminé'.
-            $reservation->statut = $reservation->statut === 'actif' ? 'terminé' : 'actif';
+            $reservation->statut = $reservation->statut === 'en attente' ? 'Confirmé' : 'Annulé';
             $reservation->save();
+        
+                
 
+                // Envoyer l'email
+                Mail::to($reservation->user->email)->send(new ReservationAcceptedMail($reservation));                // Déclencher l'événement
+                event(new ReservationUpdated($reservation));
             return redirect()->back()->with('success', 'Statut de la réservation mis à jour.');
         }
 
@@ -53,19 +63,19 @@ class ReservationController extends Controller
             return redirect()->back(); 
         }
         public function generateQRCode(Reservation $reservation)
-{
-    // Générer un QR Code contenant les informations de la réservation
-    $qrCode = QrCode::size(200)->generate(json_encode([
-        'id' => $reservation->id,
-        'user' => $reservation->user->name,
-        'trajet' => $reservation->trajet->nom, // Remplacez par les champs appropriés
-        'date' => $reservation->created_at->format('Y-m-d H:i:s'),
-    ]));
+        {
+            // Générer un QR Code contenant les informations de la réservation
+            $qrCode = QrCode::size(200)->generate(json_encode([
+                'id' => $reservation->id,
+                'user' => $reservation->passager->name,
+                'trajet' => $reservation->trajet->id, // Remplacez par les champs appropriés
+                'date' => $reservation->created_at->format('Y-m-d H:i:s'),
+            ]));
 
-    // Sauvegarder le QR Code dans le stockage
-    $path = 'qrcodes/' . $reservation->id . '.png';
-    Storage::put($path, $qrCode);
+            // Sauvegarder le QR Code dans le stockage
+            $path = 'qrcodes/' . $reservation->id . '.png';
+            Storage::put($path, $qrCode);
 
-    return $path; // Retourne le chemin du fichier QR Code
-}   
+            return $path; // Retourne le chemin du fichier QR Code
+        }   
 }

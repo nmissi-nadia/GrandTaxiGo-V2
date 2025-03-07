@@ -7,12 +7,15 @@ use App\Models\Trajet;
 use App\Models\Reservation;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Ville;
+
 class ChauffeurController extends Controller
 {
     // Afficher les trajets du chauffeur
     public function index()
     {
         $trajets = Trajet::where('chauffeur_id', auth()->id())->get();
+        $villes=Ville::all();
         $totalTrajets = Trajet::count();
         $activeTrajets = Trajet::where('statut', 'actif')->count();
         $completedTrajets = Trajet::where('statut', 'terminé')->count();
@@ -26,7 +29,7 @@ class ChauffeurController extends Controller
         $reservations = Reservation::whereHas('trajet', function ($query) {
             $query->where('chauffeur_id', auth()->id());
         })->get();
-        return view('chauffeur.index', compact('trajets','nombreReservations','totalRevenue','totalTrajets','activeTrajets','completedTrajets','reservations'));
+        return view('chauffeur.index', compact('trajets','nombreReservations','totalRevenue','totalTrajets','activeTrajets','completedTrajets','reservations','villes'));
     }
 
     // Créer un nouveau trajet

@@ -37,7 +37,7 @@
                                 @csrf
                                 @method('PATCH')
                             </form>
-                            <form action="{{ route('reservations.supprimer', $reservation->id) }}" method="POST" style="display:inline;">
+                            <form action="{{ route('reservations.destroy', ['id' => $reservation->id]) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" 
@@ -52,6 +52,16 @@
             </table>
         </div>
 
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
     </div>
 </x-app-layout>

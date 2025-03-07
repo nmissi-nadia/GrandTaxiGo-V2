@@ -28,31 +28,26 @@ Route::middleware('auth')->group(function () {
     Route::post('/trajets', [TrajetController::class, 'store']);
     Route::post('/reservations', [ReservationController::class, 'store']);
     Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('reservations.show');
-    Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.supprimer');
+    Route::delete('/reservations/{id}', [ReservationController::class, 'destroy']);
     Route::patch('/reservations/{id}/annuler', [ReservationController::class, 'annuler'])->name('reservations.annuler');
     Route::patch('/reservations/{id}/statut', [ReservationController::class, 'updateStatut'])->name('reservations.updateStatut');   
     Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
     Route::get('/reservations/{id}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
-
-
-
-});
-Route::middleware(['auth'])->group(function () {
     Route::get('/chauffeur/dashboard', [ChauffeurController::class, 'index'])->name('chauffeur.index');
     Route::patch('/users/{id}/disponibilite', [ChauffeurController::class, 'updateDisponibilite'])->name('users.updateDisponibilite');
     Route::post('/trajets/store', [TrajetController::class, 'store'])->name('trajets.store');
     Route::get('/trajets/edit/{id}', [TrajetController::class, 'edit'])->name('trajets.edit');
     Route::post('/trajets/update/{id}', [TrajetController::class, 'update'])->name('trajets.update');
     Route::post('/trajets/delete/{id}', [TrajetController::class, 'destroy'])->name('trajets.destroy');
-});
-Route::middleware(['auth'])->group(function () {
+    
+
     Route::get('/passager/dashboard', [PassagerController::class, 'index'])->name('passager.dashboard');
     // route pour acceder au reservations d'une passager lui meme
     Route::get('/passager/reservations', [PassagerController::class, 'reservations'])->name('passager.mesreservation');
+    // route pour reserver une trajet
+    Route::post('/passager/reserver/{id}', [PassagerController::class, 'reserver'])->name('passager.reserver');
     Route::post('/passager/annuler-reservation', [PassagerController::class, 'annulerReservation'])->name('passager.annuler-reservation');
-});
 
-Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/villes', [VilleController::class, 'index'])->name('villes.index');
     Route::post('/villes/store', [VilleController::class, 'store'])->name('villes.store');

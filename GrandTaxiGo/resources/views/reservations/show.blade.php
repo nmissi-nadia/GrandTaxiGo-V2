@@ -50,6 +50,15 @@
                             <div class="bg-yellow-500 text-white px-3 py-1 rounded inline-block">
                                 {{ ucfirst($reservation->statut) }}
                             </div>
+
+                            @if($reservation->statut === 'Confirmé') <!-- Adjust this condition based on your actual status value -->
+                                
+                                    @csrf
+                                    <a href="/payment" type="submit" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition">
+                                        Compléter le paiement
+                                    </a>
+                                
+                            @endif
                         </div>
                     </div>
 

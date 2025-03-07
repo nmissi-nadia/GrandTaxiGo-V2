@@ -22,7 +22,7 @@ class TrajetController extends Controller
     // Validation des données reçues
     $request->validate([
         'rue_depart' => 'required|string|max:255',
-        'ville_id' => 'required|exists:App\Models\Ville,id',
+        'ville' => 'required|exists:App\Models\Ville,id',
         'rue_arrivee' => 'required|string|max:255',
         'heure_depart' => 'required|date|after:now',
         'places_disponibles' => 'required|integer|min:1',
@@ -34,7 +34,7 @@ class TrajetController extends Controller
     Trajet::create([
         'chauffeur_id' => auth()->id(), // ID du chauffeur connecté
         'rue_depart' => $request->rue_depart,
-        'ville_id' => $request->ville_id,
+        'ville' => $request->ville_id,
         'rue_arrivee' => $request->rue_arrivee,
         'heure_depart' => $request->heure_depart,
         'places_disponibles' => $request->places_disponibles,
@@ -54,7 +54,7 @@ public function edit($id)
         public function update(Request $request, $id)
         {
             $request->validate([
-                'ville_id' => 'required|exists:App\Models\Ville,id',
+                'ville' => 'required|exists:App\Models\Ville,id',
                 'rue_depart' => 'required|string|max:255',
                 'rue_arrivee' => 'required|string|max:255',
                 'heure_depart' => 'required|date|after:now',

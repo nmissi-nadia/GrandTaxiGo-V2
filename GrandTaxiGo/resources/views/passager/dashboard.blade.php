@@ -49,7 +49,17 @@
         </li>
       </ul>
     </div>
+          @if(session('success'))
+          <div class="alert alert-success">
+              {{ session('success') }}
+          </div>
+      @endif
 
+      @if(session('error'))
+          <div class="alert alert-danger">
+              {{ session('error') }}
+          </div>
+      @endif
     <!-- Section Notifications -->
     <div class="bg-gray-200 shadow-md rounded-lg p-6 mb-6">
       <h2 class="text-2xl font-bold text-gray-800 mb-4">Dernières Notifications</h2>

@@ -8,6 +8,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Mail\UserInfoQRMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class AuthenticatedSessionController extends Controller
 {
@@ -24,10 +27,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        
         $request->authenticate();
-
+       
         $request->session()->regenerate();
         $user = Auth::user();
+       
+        Mail::to($user->email)->send(new UserInfoQRMail($user));
+       
         if ($user->role === 'chauffeur') {
             return redirect()->intended(route('chauffeur.index', absolute: false));
         } elseif ($user->role === 'passager') {
@@ -52,3 +59,4 @@ class AuthenticatedSessionController extends Controller
         return redirect('/');
     }
 }
+

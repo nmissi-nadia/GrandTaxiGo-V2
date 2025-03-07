@@ -67,13 +67,14 @@
                             </div>
                         </div>
                         
-                        <div id="trajet" class="container mx-auto px-4 rounded-[8rem] py-4">
+                        <div id="trajet" class="container mx-auto px-4 rounded-[4rem] py-4">
                             <h2 class="text-2xl font-bold mb-4">Mes Trajets</h2>
                                     <div class="overflow-x-auto rounded-[2rem]">
                                         <table class="min-w-full bg-white rounded-[2rem]">
                                             <thead>
                                                 <tr class="bg-gray-100 rounded-[8rem] text-gray-900">
                                                     <th class="py-2 px-4 text-left">ID</th>
+                                                    <th class="py-2 px-4 text-left">Ville</th>
                                                     <th class="py-2 px-4 text-left">Départ</th>
                                                     <th class="py-2 px-4 text-left">Destination</th>
                                                     <th class="py-2 px-4 text-left">Heure de Départ</th>
@@ -86,6 +87,7 @@
                                                 @foreach($trajets as $trajet)
                                                 <tr class="border-b border-gray-300">
                                                     <td class="py-2 px-4">{{ $trajet->id }}</td>
+                                                    <td class="py-2 px-4">{{ $trajet->ville_id }}</td>
                                                     <td class="py-2 px-4">{{ $trajet->rue_depart }}</td>
                                                     <td class="py-2 px-4">{{ $trajet->rue_arrivee }}</td>
                                                     <td class="py-2 px-4">{{ $trajet->heure_depart }}</td>
@@ -126,7 +128,7 @@
                                             <td class="py-2 px-4">{{ $reservation->created_at->format('d/m/Y H:i') }}</td>
                                             <td class="py-2 px-4">{{ $reservation->statut }}</td>
                                             <td class="py-2 px-4">
-                                                <form action="{{ route('reservations.supprimer', $reservation->id) }}" method="POST" style="display:inline;">
+                                                <form action="{{ route('reservations.destroy', ['id' => $reservation->id]) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-red-600 hover:underline">Supprimer</button>
@@ -191,6 +193,14 @@
             <h2 class="text-2xl font-bold mb-4 text-gray-800">Ajouter un trajet</h2>
                         <form id="addTripForm" method="POST" action="{{ route('trajets.store') }}">
                 @csrf
+                <div class="mb-4">
+                    <label for="ville" class="block text-sm font-medium text-gray-700">Ville de départ</label>
+                    <select id="ville" name="ville" required class="mt-1 p-2 w-full border border-gray-300 rounded">
+                        @foreach ($villes as $ville)
+                            <option value="{{ $ville->id }}">{{ $ville->nom }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="mb-4">
                     <label for="rue_depart" class="block text-sm font-medium text-gray-700">Rue de départ</label>
                     <input type="text" id="rue_depart" name="rue_depart" required class="mt-1 p-2 w-full border border-gray-300 rounded">

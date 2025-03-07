@@ -22,22 +22,19 @@ class PassagerController extends Controller
     {
         $trajet = Trajet::findOrFail($idTrajet);
 
-        if ($trajet->places_disponibles < $request->places) {
-            return back()->with('error', 'Nombre de places insuffisant.');
-        }
+        
 
         Reservation::create([
             'passager_id' => auth()->id(),
             'trajet_id' => $idTrajet,
-            'places_reservees' => $request->places,
             'statut' => 'en attente',
         ]);
 
         $trajet->update([
-            'places_disponibles' => $trajet->places_disponibles - $request->places,
+            'places_disponibles' => $trajet->places_disponibles - 1,
         ]);
 
-        return redirect()->route('passager.reservations')->with('success', 'Réservation effectuée avec succès.');
+        return redirect()->back();
     }
 
     // Afficher les réservations du passager
