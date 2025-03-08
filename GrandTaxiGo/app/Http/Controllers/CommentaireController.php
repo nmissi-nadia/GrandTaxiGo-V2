@@ -10,16 +10,14 @@ use Illuminate\Support\Facades\Auth;
 class CommentaireController extends Controller
 {
     // Ajouter un commentaire
-    public function store(Request $request, $reservationId)
+    public function store(Request $request, $trajetId)
     {
         $request->validate([
             'contenu' => 'required|string|max:500',
         ]);
 
-        $reservation = Reservation::findOrFail($reservationId);
-
         Commentaire::create([
-            'reservation_id' => $reservation->id,
+            'trajet_id' => $trajetId,
             'user_id' => Auth::id(),
             'contenu' => $request->input('contenu'),
         ]);

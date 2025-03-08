@@ -15,12 +15,7 @@ class Commentaire extends Model
         'contenu',
     ];
 
-    // Relation avec la réservation
-    public function reservation()
-    {
-        return $this->belongsTo(Reservation::class);
-    }
-
+    
     // Relation avec l'utilisateur
     public function user()
     {
